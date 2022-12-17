@@ -63,7 +63,7 @@ class ApplicationType extends AbstractType
                 'required' => false,
             ])
             ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-success'],
+                'attr' => ['class' => 'btn btn-success', 'onchange' => 'IsEmpty()'],
             ])
         ;
         /*$builder->get('phone')->addEventListener(
@@ -71,6 +71,7 @@ class ApplicationType extends AbstractType
             function (FormEvent $event) {
                 $form = $event->getForm();
                 if(!empty($event->getData())) {
+                    //dd($form->getParent()->get('agreement')->getConfig()->getRequired());
                     $form->getParent()
                         ->get('agreement')->setData(
                             [
