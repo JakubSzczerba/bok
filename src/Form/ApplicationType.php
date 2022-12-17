@@ -19,7 +19,7 @@ class ApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('topic', TextType::class, [
+            ->add('subject', TextType::class, [
                 'label' => 'Temat: ',
             ])
             ->add('comment', TextareaType::class, [

@@ -23,8 +23,11 @@ class DashboardController extends AbstractController
         $form = $this->createForm(ApplicationType::class);
         $form->handleRequest($request);
 
+        $agent = $request->server->get('HTTP_USER_AGENT');
+
         return $this->render('dashboard/index.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'agent' =>$agent,
         ]);
     }
 }
