@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ApplicationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Dictionary\ApplicationDictionary;
 
 #[ORM\Entity(repositoryClass: ApplicationRepository::class)]
 class Application
@@ -47,6 +48,14 @@ class Application
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __construct()
+    {
+        $this->dateAdd = new \DateTime();
+        $this->userAgent = $_SERVER[ApplicationDictionary::USER_AGENT];
+        $this->isRead = false;
+        $this->status = ApplicationDictionary::NEW_APPLICATION;
     }
 
     public function getSubject(): ?string

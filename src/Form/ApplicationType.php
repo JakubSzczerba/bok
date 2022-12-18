@@ -73,12 +73,7 @@ class ApplicationType extends AbstractType
                 if(!empty($event->getData())) {
                     //dd($form->getParent()->get('agreement')->getConfig()->getRequired());
                     $form->getParent()
-                        ->get('agreement')->setData(
-                            [
-                                'required' => true,
-                                'message' => 'ogarnij się'
-                            ]
-                        );
+                        ->get('agreement');
                 }
             }
         );*/

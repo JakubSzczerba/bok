@@ -14,9 +14,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DashboardController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     #[Route('/dashboard', name: 'dashboard')]
     public function index(Request $request): Response
     {
@@ -26,6 +34,10 @@ class DashboardController extends AbstractController
         //$agent = $request->server->get('HTTP_USER_AGENT');
         if ($form->isSubmitted() && $form->isValid())
         {
+            $application = $form->getData();
+
+            $this->entityManager->persist($application);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('dashboard');
         }
