@@ -31,7 +31,6 @@ class DashboardController extends AbstractController
         $form = $this->createForm(ApplicationType::class);
         $form->handleRequest($request);
 
-        //$agent = $request->server->get('HTTP_USER_AGENT');
         if ($form->isSubmitted() && $form->isValid())
         {
             $application = $form->getData();
