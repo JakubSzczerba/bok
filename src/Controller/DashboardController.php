@@ -31,6 +31,7 @@ class DashboardController extends AbstractController
         $form = $this->createForm(ApplicationType::class);
         $form->handleRequest($request);
 
+        //test commit
         if ($form->isSubmitted() && $form->isValid())
         {
             $application = $form->getData();
