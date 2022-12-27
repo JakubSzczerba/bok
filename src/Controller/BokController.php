@@ -11,8 +11,10 @@ namespace App\Controller;
 
 use App\Dictionary\ApplicationDictionary;
 use App\Dictionary\StatusDictionary;
+use App\Entity\Information;
 use App\Form\UpdateStatusType;
 use App\Provider\ApplicationProvider;
+use App\Repository\InformationRepository;
 use App\Services\Application\ReadApplication;
 use App\Services\Application\UpdateStatus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,12 +33,15 @@ class BokController extends AbstractController
 
     private UpdateStatus $updateStatus;
 
-    public function __construct(ApplicationProvider $applicationProvider, ReadApplication $readApplication, EntityManagerInterface $entityManager, UpdateStatus $updateStatus)
+    private InformationRepository $informationRepository;
+
+    public function __construct(ApplicationProvider $applicationProvider, ReadApplication $readApplication, EntityManagerInterface $entityManager, UpdateStatus $updateStatus, InformationRepository $informationRepository)
     {
         $this->applicationProvider = $applicationProvider;
         $this->entityManager = $entityManager;
         $this->readApplication = $readApplication;
         $this->updateStatus = $updateStatus;
+        $this->informationRepository = $informationRepository;
     }
 
     #[Route('/bok', name: 'bok')]
@@ -69,13 +74,25 @@ class BokController extends AbstractController
             $status = $form->get(StatusDictionary::STATUS)->getData();
             $this->updateStatus->updateData($application, $status);
 
+            if($form->get('information')->getData() !== null) {
+                $information = new Information();
+                $information->setContent($form->get('information')->getData()->getContent());
+                $information->setApplication($application);
+                $information->setUser($this->getUser());
+
+                $this->entityManager->persist($information);
+            }
+
             $this->entityManager->flush();
 
             return $this->redirectToRoute('bok');
         }
 
+        $comments = $this->informationRepository->getComments($id);
+
         return $this->render('Bok/Application/index.html.twig', [
             'application' => $application,
+            'comments' => $comments,
             'form' => $form->createView(),
         ]);
     }

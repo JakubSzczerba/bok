@@ -52,6 +52,8 @@ class Application
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateRead = null;
 
+    private Information|null $information = null;
+
     public function __construct()
     {
         $this->dateAdd = new \DateTime();
@@ -210,4 +212,15 @@ class Application
         return $this;
     }
 
+    public function getInformation(): ?Information
+    {
+        return $this->information;
+    }
+
+    public function setInformation(?Information $information): self
+    {
+        $this->information = $information;
+
+        return $this;
+    }
 }

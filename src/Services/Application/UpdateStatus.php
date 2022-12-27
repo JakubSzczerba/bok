@@ -17,6 +17,7 @@ class UpdateStatus
     {
         $application->setStatus($value);
 
+
         return $application;
     }
 

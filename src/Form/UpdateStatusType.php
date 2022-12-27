@@ -37,7 +37,10 @@ class UpdateStatusType extends AbstractType
                 },
                 'required' => false,
             ])
-             ->add('save', SubmitType::class, [])
+            ->add('information', InformationType::class, [
+                'required' => false,
+            ])
+            ->add('save', SubmitType::class, [])
         ;
     }
 
