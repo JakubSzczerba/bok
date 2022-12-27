@@ -4,22 +4,38 @@
 
 {% block body %}
     <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Subject</th>
-            <th>Comment</th>
-            <th>Organization</th>
-            <th>Date</th>
-            <th>Status</th>
-        </tr>
-        </thead>
         <tbody>
             <tr>
+                <td>Temat zgłoszenia</td>
                 <td>{{ application.subject }}</td>
+            </tr>
+            <tr>
+                <td>Treść</td>
                 <td>{{ application.comment }}</td>
+            </tr>
+            <tr>
+                <td>Jednostka organizacyjna</td>
                 <td>{{ application.organization }}</td>
+            </tr>
+            <tr>
+                <td>Data dodania</td>
                 <td>{{ application.dateAdd|date }}</td>
-                <td>{{ application.status }}</td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>{{ application.email }}</td>
+            </tr>
+            <tr>
+                <td>User agent</td>
+                <td>{{ application.userAgent }}</td>
+            </tr>
+            <tr>
+                <td>Odczytał jako pierwszy</td>
+                <td>{{ application.user.email }}</td>
+            </tr>
+            <tr>
+                <td>Data przeczytania</td>
+                <td>{{ application.dateRead|date }}</td>
             </tr>
         </tbody>
     </table>
