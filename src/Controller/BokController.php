@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Dictionary\ApplicationDictionary;
+use App\Dictionary\StatusDictionary;
 use App\Form\UpdateStatusType;
 use App\Provider\ApplicationProvider;
 use App\Services\Application\ReadApplication;
@@ -64,7 +66,7 @@ class BokController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $status = $form->get('status')->getData();
+            $status = $form->get(StatusDictionary::STATUS)->getData();
             $this->updateStatus->updateData($application, $status);
 
             $this->entityManager->flush();

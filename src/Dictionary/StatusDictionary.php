@@ -11,6 +11,8 @@ namespace App\Dictionary;
 
 class StatusDictionary
 {
+    public const STATUS = 'status';
+
     public const ARRAY_STATUS = [
         "nowe" => "new",
         "w trakcie realizacji" => "in progress",
