@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Application;
+use App\Form\UpdateStatusType;
 use App\Provider\ApplicationProvider;
-use App\Repository\ApplicationRepository;
 use App\Services\Application\ReadApplication;
+use App\Services\Application\UpdateStatus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,11 +27,14 @@ class BokController extends AbstractController
 
     private EntityManagerInterface $entityManager;
 
-    public function __construct(ApplicationProvider $applicationProvider, ReadApplication $readApplication, EntityManagerInterface $entityManager)
+    private UpdateStatus $updateStatus;
+
+    public function __construct(ApplicationProvider $applicationProvider, ReadApplication $readApplication, EntityManagerInterface $entityManager, UpdateStatus $updateStatus)
     {
         $this->applicationProvider = $applicationProvider;
         $this->entityManager = $entityManager;
         $this->readApplication = $readApplication;
+        $this->updateStatus = $updateStatus;
     }
 
     #[Route('/bok', name: 'bok')]
@@ -56,8 +59,22 @@ class BokController extends AbstractController
             $this->entityManager->flush();
         }
 
+        $form = $this->createForm(UpdateStatusType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $status = $form->get('status')->getData();
+            $this->updateStatus->updateData($application, $status);
+
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('bok');
+        }
+
         return $this->render('Bok/Application/index.html.twig', [
             'application' => $application,
+            'form' => $form->createView(),
         ]);
     }
 
