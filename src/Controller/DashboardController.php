@@ -25,7 +25,7 @@ class DashboardController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/dashboard', name: 'dashboard')]
+    #[Route('/', name: 'dashboard')]
     public function index(Request $request): Response
     {
         $form = $this->createForm(ApplicationType::class);
