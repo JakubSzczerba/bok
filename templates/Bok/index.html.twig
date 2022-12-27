@@ -3,12 +3,28 @@
 {% block title %}Bok{% endblock %}
 
 {% block body %}
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="example-wrapper">
-                <h1>Bok panel</h1>
-            </div>
-        </div>
-    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Comment</th>
+            <th>Organization</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for application in applications %}
+            <tr>
+                <td>
+                    <a href="#">{{ application.subject }}</a>
+                </td>
+                <td>{{ application.comment }}</td>
+                <td>{{ application.organization }}</td>
+                <td>{{ application.dateAdd|date }}</td>
+                <td>{{ application.status }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

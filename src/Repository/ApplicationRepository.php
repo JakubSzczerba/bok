@@ -21,46 +21,14 @@ class ApplicationRepository extends ServiceEntityRepository
         parent::__construct($registry, Application::class);
     }
 
-    public function save(Application $entity, bool $flush = false): void
+    public function getAllUnreadApplications(): array
     {
-        $this->getEntityManager()->persist($entity);
+        $qb = $this->createQueryBuilder('a');
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $qb->select('a')
+            ->where('a.isRead = 0')
+            ->orderBy('a.dateAdd', 'ASC');
+
+        return $qb->getQuery()->getArrayResult();
     }
-
-    public function remove(Application $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-//    /**
-//     * @return Application[] Returns an array of Application objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Application
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

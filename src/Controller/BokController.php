@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Repository\ApplicationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,15 +20,22 @@ class BokController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    private ApplicationRepository $applicationRepository;
+
+    public function __construct(EntityManagerInterface $entityManager, ApplicationRepository $applicationRepository)
     {
         $this->entityManager = $entityManager;
+        $this->applicationRepository = $applicationRepository;
     }
 
     #[Route('/bok', name: 'bok')]
     public function index(Request $request): Response
     {
-        return $this->render('Bok/index.html.twig', []);
+        $applications = $this->applicationRepository->getAllUnreadApplications();
+
+        return $this->render('Bok/index.html.twig', [
+            'applications' => $applications,
+        ]);
     }
 
 }
