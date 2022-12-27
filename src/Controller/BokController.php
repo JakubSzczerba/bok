@@ -22,9 +22,12 @@ class BokController extends AbstractController
 {
     private ApplicationProvider $applicationProvider;
 
-    public function __construct(ApplicationProvider $applicationProvider)
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(ApplicationProvider $applicationProvider, EntityManagerInterface $entityManager)
     {
         $this->applicationProvider = $applicationProvider;
+        $this->entityManager = $entityManager;
     }
 
     #[Route('/bok', name: 'bok')]
@@ -41,6 +44,11 @@ class BokController extends AbstractController
     public function singleApplication(Request $request, int $id): Response
     {
         $application = $this->applicationProvider->getSingleData($id);
+        $application->setUser($this->getUser());
+        $application->setIsRead(true);
+        $application->setDateRead(new \DateTime());
+
+        $this->entityManager->flush();
 
         return $this->render('Bok/Application/index.html.twig', [
             'application' => $application,

@@ -45,10 +45,12 @@ class Application
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    private User|null $user = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateRead = null;
 
     public function __construct()
     {
@@ -56,6 +58,13 @@ class Application
         $this->userAgent = $_SERVER[ApplicationDictionary::USER_AGENT];
         $this->isRead = false;
         $this->status = ApplicationDictionary::NEW_APPLICATION;
+        $this->user = null;
+        $this->dateRead = null;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getSubject(): ?string
@@ -177,4 +186,28 @@ class Application
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getDateRead(): ?\DateTimeInterface
+    {
+        return $this->dateRead;
+    }
+
+    public function setDateRead(\DateTimeInterface $dateRead): self
+    {
+        $this->dateRead = $dateRead;
+
+        return $this;
+    }
+
 }
