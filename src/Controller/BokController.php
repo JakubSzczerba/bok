@@ -70,5 +70,4 @@ class BokController extends AbstractController
             'applications' => $applications,
         ]);
     }
-
 }
