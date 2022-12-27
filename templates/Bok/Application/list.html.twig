@@ -3,32 +3,37 @@
 {% block title %}Bok{% endblock %}
 
 {% block body %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Subject</th>
-            <th>Comment</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Read</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for application in applications %}
+    {% include 'Elements/nav.html.twig' %}
+    {% if applications is not empty%}
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>
-                    <a href="{{ path('single_application', {id: application.id }) }}">{{ application.subject }}</a>
-                </td>
-                <td>{{ application.comment }}</td>
-                <td>{{ application.dateAdd|date }}</td>
-                <td>{{ application.status }}</td>
-                {% if application.isRead %}
-                    <td>yes</td>
-                {% else %}
-                    <td>false</td>
-                {% endif%}
+                <th>Subject</th>
+                <th>Comment</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Read</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for application in applications %}
+                <tr>
+                    <td>
+                        <a href="{{ path('single_application', {id: application.id }) }}">{{ application.subject }}</a>
+                    </td>
+                    <td>{{ application.comment }}</td>
+                    <td>{{ application.dateAdd|date }}</td>
+                    <td>{{ application.status }}</td>
+                    {% if application.isRead %}
+                        <td>yes</td>
+                    {% else %}
+                        <td>false</td>
+                    {% endif%}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        Brak istniejąych zgłoszeń
+    {% endif %}
 {% endblock %}
