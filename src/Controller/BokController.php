@@ -24,14 +24,8 @@ class BokController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/bok/dashboard', name: 'bok_dashboard')]
-    public function index(Request $request): Response
-    {
-        return $this->render('Bok/index.html.twig', []);
-    }
-
     #[Route('/bok', name: 'bok')]
-    public function bok(Request $request): Response
+    public function index(Request $request): Response
     {
         return $this->render('Bok/index.html.twig', []);
     }
