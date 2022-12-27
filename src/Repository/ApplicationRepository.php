@@ -31,4 +31,14 @@ class ApplicationRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getArrayResult();
     }
+
+    public function findAllFromNewest(): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb->select('a')
+            ->orderBy('a.dateAdd', 'DESC');
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }

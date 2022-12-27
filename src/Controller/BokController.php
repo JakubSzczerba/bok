@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Application;
+use App\Provider\ApplicationProvider;
 use App\Repository\ApplicationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,22 +20,39 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class BokController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
+    private ApplicationProvider $applicationProvider;
 
-    private ApplicationRepository $applicationRepository;
-
-    public function __construct(EntityManagerInterface $entityManager, ApplicationRepository $applicationRepository)
+    public function __construct(ApplicationProvider $applicationProvider)
     {
-        $this->entityManager = $entityManager;
-        $this->applicationRepository = $applicationRepository;
+        $this->applicationProvider = $applicationProvider;
     }
 
     #[Route('/bok', name: 'bok')]
     public function index(Request $request): Response
     {
-        $applications = $this->applicationRepository->getAllUnreadApplications();
+        $applications = $this->applicationProvider->getDashboardData();
 
         return $this->render('Bok/index.html.twig', [
+            'applications' => $applications,
+        ]);
+    }
+
+    #[Route('/bok/application/{id}', name: 'single_application')]
+    public function singleApplication(Request $request, int $id): Response
+    {
+        $application = $this->applicationProvider->getSingleData($id);
+
+        return $this->render('Bok/Application/index.html.twig', [
+            'application' => $application,
+        ]);
+    }
+
+    #[Route('/bok/list', name: 'list_application')]
+    public function listApplications(Request $request): Response
+    {
+        $applications = $this->applicationProvider->listAll();
+
+        return $this->render('Bok/Application/list.html.twig', [
             'applications' => $applications,
         ]);
     }
