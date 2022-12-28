@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% import "Macro/recaptcha.html.twig" as reCAPTCHA %}
 {% block title %}Form{% endblock %}
 
 {% block body %}
@@ -11,7 +11,7 @@
             <div class="col-lg-6">
                 {{ form_start(form) }}
                 {{ form_end(form) }}<br>
-                <div class="g-recaptcha" data-sitekey="6Lcgo7QjAAAAAF_7HVagQXPShs40SN29x3qPymvb"></div>
+                {{reCAPTCHA.google()}}
             </div>
         </div>
     </div>
