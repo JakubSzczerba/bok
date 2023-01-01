@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Dictionary\ApplicationDictionary;
+use App\Dictionary\InformationDictionary;
 use App\Dictionary\StatusDictionary;
 use App\Entity\Information;
 use App\Form\UpdateStatusType;
@@ -17,6 +18,7 @@ use App\Provider\ApplicationProvider;
 use App\Repository\InformationRepository;
 use App\Services\Application\ReadApplication;
 use App\Services\Application\UpdateStatus;
+use App\Services\Information\PersistInformation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,13 +37,16 @@ class BokController extends AbstractController
 
     private InformationRepository $informationRepository;
 
-    public function __construct(ApplicationProvider $applicationProvider, ReadApplication $readApplication, EntityManagerInterface $entityManager, UpdateStatus $updateStatus, InformationRepository $informationRepository)
+    private PersistInformation $persistInformation;
+
+    public function __construct(ApplicationProvider $applicationProvider, ReadApplication $readApplication, EntityManagerInterface $entityManager, UpdateStatus $updateStatus, InformationRepository $informationRepository, PersistInformation $persistInformation)
     {
         $this->applicationProvider = $applicationProvider;
         $this->entityManager = $entityManager;
         $this->readApplication = $readApplication;
         $this->updateStatus = $updateStatus;
         $this->informationRepository = $informationRepository;
+        $this->persistInformation = $persistInformation;
     }
 
     #[Route('/bok', name: 'bok')]
@@ -74,11 +79,14 @@ class BokController extends AbstractController
             $status = $form->get(StatusDictionary::STATUS)->getData();
             $this->updateStatus->updateData($application, $status);
 
-            if($form->get('information')->getData() !== null) {
-                $information = new Information();
-                $information->setContent($form->get('information')->getData()->getContent());
-                $information->setApplication($application);
-                $information->setUser($this->getUser());
+            $informationData = $form->get(InformationDictionary::INFORMATION)->getData();
+
+            if($informationData !== null) {
+                $information = $this->persistInformation->createInformation(
+                    $informationData->getContent(),
+                    $application,
+                    $this->getUser()
+                );
 
                 $this->entityManager->persist($information);
             }
