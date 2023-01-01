@@ -12,6 +12,7 @@ namespace App\Form;
 use App\Entity\Application;
 use App\Provider\OrganizationProvider;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -55,7 +56,7 @@ class ApplicationType extends AbstractType
                 'label' => 'Email: ',
                 'required' => false,
             ])
-            ->add('phone', TelType::class, [
+            ->add('phone', NumberType::class, [
                 'label' => 'Telefon: ',
                 'required' => false,
             ])
@@ -68,16 +69,19 @@ class ApplicationType extends AbstractType
             ])
         ;
         /*$builder->get('phone')->addEventListener(
-            FormEvents::POST_SUBMIT,
+            FormEvents::PRE_SUBMIT,
             function (FormEvent $event) {
                 $form = $event->getForm();
                 if(!empty($event->getData())) {
                     //dd($form->getParent()->get('agreement')->getConfig()->getRequired());
-                    $form->getParent()
-                        ->get('agreement');
+                    $form->getParent()->remove('agreement');
+                    $form->getParent()->add('agreement', CheckboxType::class, [
+                        'label' => 'Zgoda: ',
+                        'required' => true,
+                    ]);
                 }
             }
-        );*/
+        ); */
     }
 
     public function configureOptions(OptionsResolver $resolver): void
