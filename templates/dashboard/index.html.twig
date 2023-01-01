@@ -3,15 +3,25 @@
 {% block title %}Form{% endblock %}
 
 {% block body %}
-
-<div class="row">
+    <style>
+        body {
+            align-items: center;
+            background-color: #F5FFFA;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
+    </style>
+<div class="form-dashboard">
     <div class="col-lg-12">
         <div class="example-wrapper">
-            <h1>Form application</h1>
-            <div class="col-lg-6">
-                {{ form_start(form) }}
-                {{ form_end(form) }}<br>
-                {{ reCAPTCHA.google() }}
+            <h1>Wyślij zgłoszenie</h1>
+            <div class="col-lg-8">
+                <div class="form-group">
+                    {{ form_start(form) }}
+                    {{ form_end(form) }}<br>
+                    {{ reCAPTCHA.google() }}
+                </div>
             </div>
         </div>
     </div>

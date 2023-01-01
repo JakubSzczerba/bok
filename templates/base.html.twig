@@ -10,6 +10,7 @@
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
+            <link href="/style/dashboard/form.css" rel="stylesheet">
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
