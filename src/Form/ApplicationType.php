@@ -48,6 +48,7 @@ class ApplicationType extends AbstractType
                 'choice_value' => function ($value) {
                     return $value;
                 },
+                'data' => 'shop_a',
                 'required' => false,
             ])
             ->add('email', EmailType::class, [
