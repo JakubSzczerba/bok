@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bok{% endblock %}
+
+{% block body %}
+    {% include 'Elements/nav.html.twig' %}
+    {% if applications is not empty%}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Comment</th>
+                <th>Organization</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for application in applications %}
+                <tr>
+                    <td>
+                        <a href="{{ path('single_application', {id: application.id }) }}">{{ application.subject }}</a>
+                    </td>
+                    <td>{{ application.comment }}</td>
+                    <td>{{ application.organization }}</td>
+                    <td>{{ application.dateAdd|date }}</td>
+                    <td>{{ application.status }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        Brak nowych zgłoszeń
+    {% endif %}
+{% endblock %}
