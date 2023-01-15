@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bok{% endblock %}
+
+{% block body %}
+    {% include 'Elements/nav.html.twig' %}
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>Temat zgłoszenia</td>
+                <td>{{ application.subject }}</td>
+            </tr>
+            <tr>
+                <td>Treść</td>
+                <td>{{ application.comment }}</td>
+            </tr>
+            <tr>
+                <td>Jednostka organizacyjna</td>
+                <td>{{ application.organization }}</td>
+            </tr>
+            <tr>
+                <td>Data dodania</td>
+                <td>{{ application.dateAdd|date }}</td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>{{ application.email }}</td>
+            </tr>
+            <tr>
+                <td>telefon</td>
+                <td>{{ application.phone }}</td>
+            </tr>
+            <tr>
+                <td>User agent</td>
+                <td>{{ application.userAgent }}</td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>{{ application.status }}</td>
+            </tr>
+            <tr>
+                <td>Odczytał jako pierwszy</td>
+                <td>{{ application.user.email }}</td>
+            </tr>
+            <tr>
+                <td>Data przeczytania</td>
+                <td>{{ application.dateRead|date }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <div class="row">
+        <div class="col-lg-3" style="padding-left: 20px">
+            {{ form_start(form) }}
+            {{ form_end(form) }}
+        </div>
+        <div class="col-lg-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Komenatrze</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for comment in comments %}
+                    <tr>
+                        <td>{{ comment.user }}</td>
+                        <td>{{ comment.content }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
